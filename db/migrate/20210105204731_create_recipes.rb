@@ -8,6 +8,7 @@ class CreateRecipes < ActiveRecord::Migration
       t.string :cook_time
       t.string :author
       t.date :date_created
+      t.integer :user_id
     end
   end
 end

@@ -3,6 +3,7 @@ class CreateInstructions < ActiveRecord::Migration
     create_table :instructions do |t|
       t.integer :step_number
       t.string :content
+      t.integer :recipe_id
     end
   end
 end
