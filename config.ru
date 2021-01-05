@@ -6,4 +6,7 @@ end
 
 use Rack::MethodOverride
 
+use AuthenticationController
+use CommentController
+use RecipeController
 run ApplicationController
