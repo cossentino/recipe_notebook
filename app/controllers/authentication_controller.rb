@@ -11,7 +11,16 @@ class AuthenticationController < ApplicationController
     end
 
     get '/registration/signup' do
-        erb :'/users/registration/signup', :layout => :'../views/authentication/layout'
+        erb :'/users/registration/signup', :layout => :'../views/users/layout'
+    end
+
+    get '/registration/failure' do
+        erb :'/users/registration/failure', :layout => :'../views/users/layout'
+    end
+
+    get '/authentication/logout' do
+        logout
+        redirect '/authentication/login'
     end
 
     post '/authentication' do
@@ -24,19 +33,28 @@ class AuthenticationController < ApplicationController
         end
     end
 
-
     post '/registration' do
-        @user = User.find_by(username: params[:username])
-        if !@user
-            new_user = User.create(username: params[:username], password: params[:password])
-            session[:user_id] = new_user.id
-            redirect '/recipes'
+        @new_user = User.find_by(username: params[:username])
+        if !@new_user
+            @new_user = User.create(username: params[:username], password: params[:password])
+            login(@user)
         end
         redirect '/registration/failure'
     end
 
 
 
+    helpers do
+        def login(user)
+            session[:user_id] = user.id
+            redirect '/recipes'
+        end
+
+        def logout
+            session.clear
+            redirect '/authentication/login'
+        end
 
 
+    end
 end
