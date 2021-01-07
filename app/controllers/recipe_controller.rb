@@ -12,6 +12,11 @@ class RecipeController < ApplicationController
         view_or_redirect(:'/recipes/new')
     end
 
+    get '/recipes/:id' do
+        @recipe = Recipe.find(params[:id])
+        view_or_redirect(:'/recipes/show')
+    end
+
     post '/recipes' do
         new_recipe = Recipe.new(params[:recipe])
         current_user.recipes << new_recipe

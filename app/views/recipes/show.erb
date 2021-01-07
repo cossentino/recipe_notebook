@@ -1,0 +1,23 @@
+
+<h3><%= @recipe.name.split(" ").map {|w| w.capitalize}.join(" ") %></h3>
+
+
+<h6>Chef: <%= @recipe.author %></h6> 
+<h6>Cuisine: <%= @recipe.cuisine %></h6> 
+<h6>Cook/Prep Time: <%= @recipe.cook_time %></h6>
+<h6>Ingredients: </h6>
+<ul>
+<% @recipe.ingredients.each do |ing| %>
+    <li><%= ing.name %></li>
+<% end %>
+</ul>
+
+<h6>Steps: </h6>
+<ol>
+<% @recipe.instructions.each do |inst| %>
+    <li><%= inst.content %></li>
+<% end %>
+</ul>
+
+
+<br><br><a href="/recipes/<%= @recipe.id %>">Delete Recipe</a>
