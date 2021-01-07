@@ -44,7 +44,6 @@ class AuthenticationController < ApplicationController
     end
 
 
-
     helpers do
         def login(user)
             session[:user_id] = user.id
@@ -55,7 +54,5 @@ class AuthenticationController < ApplicationController
             session.clear
             redirect '/authentication/login'
         end
-
-
     end
 end

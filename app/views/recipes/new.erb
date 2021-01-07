@@ -7,10 +7,20 @@
 
         <h6> Recipe Name: </h6>
         <input type="text" name="recipe[name]" id="recipe_name">
-        <h6>Cuisine: </h6>
-        <input type="text" name="recipe[cuisine]" id="recipe_cuisine">
         <h6>Chef: </h6>
         <input type="text" name="recipe[author]" id="recipe_author">
+        <h6>Cuisine: </h6>
+        <input type="text" name="recipe[cuisine]" id="recipe_cuisine">
+        <h6>Meal: </h6>
+        <% @meals.each do |meal| %>
+            <p>
+            <label>
+                <input type="checkbox" name="recipe[meals][]" id="meal_<%= @meals.index(meal) %>" value="<%= meal %>" />
+                <span><%= meal %></span>
+            </label>
+            </p>
+        <% end %>
+          
         <h6>Cooking/Prep Time: </h6>
         <input type="text" name="recipe[cook_time]" id="recipe_cook_time">
 

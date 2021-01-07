@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210106195351) do
+ActiveRecord::Schema.define(version: 20210107205145) do
 
   create_table "comments", force: :cascade do |t|
     t.string  "content"
@@ -28,6 +28,15 @@ ActiveRecord::Schema.define(version: 20210106195351) do
     t.integer "step_number"
     t.string  "content"
     t.integer "recipe_id"
+  end
+
+  create_table "meals", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "recipe_meals", force: :cascade do |t|
+    t.integer "recipe_id"
+    t.integer "meal_id"
   end
 
   create_table "recipes", force: :cascade do |t|
