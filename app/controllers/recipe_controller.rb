@@ -13,7 +13,7 @@ class RecipeController < ApplicationController
     end
 
     post '/recipes' do
-        new_recipe = Recipe.new(name: params[:name])
+        new_recipe = Recipe.new(params[:recipe])
         current_user.recipes << new_recipe
         ingredients_array = params[:ings]
       
@@ -32,7 +32,9 @@ class RecipeController < ApplicationController
                 new_recipe.instructions << new_step
             end
         end
+        new_recipe.save
         current_user.save
+        redirect '/recipes'
     end
 
 
