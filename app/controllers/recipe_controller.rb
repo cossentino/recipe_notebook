@@ -33,7 +33,7 @@ class RecipeController < ApplicationController
             if !ing.empty?
                 index = params[:ings].index(ing)
                 new_ingredient = Ingredient.find_or_create_by(name: params[:ings][index])
-                new_ingredient.quantity = params[:amts][index] if !params[:amts][index].empty?
+                recipe_ingredient = RecipesIngredient.last
                 new_ingredient.unit = params[:units][index] if !params[:units][index].empty?
                 new_recipe.ingredients << new_ingredient
                 new_ingredient.save
