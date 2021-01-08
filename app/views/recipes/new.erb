@@ -15,7 +15,7 @@
         <% @meals.each do |meal| %>
             <p>
             <label>
-                <input type="checkbox" name="recipe[meals][]" id="meal_<%= @meals.index(meal) %>" value="<%= meal %>" />
+                <input type="checkbox" name="[meals][]" id="meal_<%= @meals.index(meal) %>" value="<%= meal %>" />
                 <span><%= meal %></span>
             </label>
             </p>
@@ -26,20 +26,15 @@
 
         <h5>Add Ingredients: </h5>
         <div class="row">
-            <h6 class="col s2">Quantity: </h6>
-            <h6 class="col s2">Unit: </h6>
-            <h6 class="col s8">Ingredient: </h6>
+            <h6 class="col s3">Quantity: </h6>
+            <h6 class="col s9">Ingredient: </h6>
         </div>
-
         <div class="row">
                 <% 10.times do %>
-                    <div class="col s2">
-                        <input type="text" name=amts[] id="amts">
+                    <div class="col s3">
+                        <input type="text" name=quants[] id="quants">
                     </div>
-                    <div class="col s2">
-                         <input type="text" name=units[] id="units">
-                    </div>
-                    <div class="col s8">
+                    <div class="col s9">
                          <input type="text" name=ings[] id="ings">
                     </div>
                 <% end %>
@@ -48,10 +43,8 @@
         <div class ="row">
             <div class="col s12">
                 <h4>Steps: </h4>
-                <% i = 1 %>
-                <% 10.times do %>
-                    <%= "#{i}. " %><input type="text" name=steps[] id="step">
-                    <% i += 1 %>
+                <% 10.times do |index| %>
+                    <%= "#{index + 1}. " %><input type="text" name=steps[] id="step">
                 <% end %>
             </div>
         </div>

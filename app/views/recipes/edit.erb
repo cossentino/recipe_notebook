@@ -1,0 +1,61 @@
+
+
+<h3>Edit your recipe:</h3>
+
+<div class="container">
+    <form method="post" action="/recipes/<%= @recipe.id %>">
+        <input id="hidden" type="hidden" name="_method" value="patch">
+        <h6> Recipe Name: </h6>
+        <input type="text" name="recipe[name]" id="recipe_name" value="<%= @recipe.name %>">
+        <h6>Chef: </h6>
+        <input type="text" name="recipe[author]" id="recipe_author" value="<%= @recipe.author %>">
+        <h6>Cuisine: </h6>
+        <input type="text" name="recipe[cuisine]" id="recipe_cuisine" value="<%= @recipe.cuisine %>">
+        <h6>Meal: </h6>
+        <% @meals.each do |meal| %>
+            <p>
+            <label>
+                <input type="checkbox" name="[meals][]" id="meal_<%= @meals.index(meal) %>" value="<%= meal %>" <%= "checked" if @recipe.meals.pluck(:name).include?(meal) %>>
+                <span><%= meal %></span>
+            </label>
+            </p>
+        <% end %>
+          
+        <h6>Cooking/Prep Time: </h6>
+        <input type="text" name="recipe[cook_time]" id="recipe_cook_time" value="<%= @recipe.cook_time %>">
+
+        <h5>Ingredients: </h5>
+        <div class="row">
+            <h6 class="col s3">Quantity: </h6>
+            <h6 class="col s9">Ingredient: </h6>
+        </div>
+        <div class="row">
+                <% @ingredients.each do |ing| %>
+                    <div class="col s3">
+                        <input type="text" name="quants[]" id="quants" value="<%= RecipeIngredient.find_by(recipe_id: @recipe.id, ingredient_id: ing.id).quantity %>">
+                    </div>
+                    <div class="col s9">
+                         <input type="text" name="ings[]" id="ings" value=<%= ing.name %>>
+                    </div>
+                <% end %>
+        </div>
+        <br><br>
+        <div class ="row">
+            <div class="col s12">
+                <h4>Steps: </h4>
+                <% i = 1 %>
+                <% @recipe.instructions.pluck("content").each do |inst| %>
+                    <%= "#{i}. " %><input type="text" name="steps[]" id="step" value="<%= inst %>">
+                    <% i += 1 %>
+                <% end %>
+                <% 5.times do %>
+                    <%= "#{i}. " %><input type="text" name="steps[]" id="step">
+                    <% i += 1 %>
+                <% end %>
+            </div>
+        </div>
+        <input type="submit" value="Edit Recipe">
+    </form>
+</div>
+        
+    

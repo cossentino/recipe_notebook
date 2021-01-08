@@ -5,10 +5,18 @@
 <h6>Chef: <%= @recipe.author %></h6> 
 <h6>Cuisine: <%= @recipe.cuisine %></h6> 
 <h6>Cook/Prep Time: <%= @recipe.cook_time %></h6>
+<h6> Meals: </h6> <% @recipe.meals.pluck("name").each do |name| %>
+    <%= name.capitalize %>
+<% end %>
 <h6>Ingredients: </h6>
 <ul>
-<% @recipe.ingredients.each do |ing| %>
-    <li><%= ing.name %></li>
+<% @ingredients.each do |ing| %>
+    <% quantity = RecipeIngredient.find_by(recipe_id: @recipe.id, ingredient_id: ing.id).quantity %>
+    <% if !!quantity %>
+        <li><%= "#{quantity} #{ing.name}" %></li>
+    <% else %>
+        <li><%= ing.name %></li>
+    <% end %>
 <% end %>
 </ul>
 
@@ -20,4 +28,12 @@
 </ul>
 
 
-<br><br><a href="/recipes/<%= @recipe.id %>">Delete Recipe</a>
+<br><br>
+<div class="row">
+    <a style="float:left; padding-right:20px" href="/recipes/<%= @recipe.id %>/edit">Edit Recipe</a>
+
+    <form action="/recipes/<%= @recipe.id %>" method="post">
+    <input id="hidden" type="hidden" name="_method" value="delete">
+    <input type="submit" value="Delete Recipe">
+    </form> 
+</div>
