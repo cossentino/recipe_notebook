@@ -23,6 +23,7 @@ class RecipeController < ApplicationController
         @meals = ['Breakfast', 'Lunch', 'Dinner', 'Brunch', 'Snack']
         @recipe = Recipe.find(params[:id])
         @ingredients = @recipe.ingredients
+        puts @ingredients.pluck("name")
         view_or_redirect(:'/recipes/edit')
     end
 
@@ -35,18 +36,18 @@ class RecipeController < ApplicationController
         params[:ings].each do |ing|
             if !ing.empty?
                 index = params[:ings].index(ing)
-                new_ingredient = Ingredient.find_or_create_by(name: params[:ings][index])
+                new_recipe.ingredients <<  Ingredient.find_or_create_by(name: params[:ings][index])
                 recipe_ingredient = RecipeIngredient.last
                 recipe_ingredient.quantity = params[:quants][index] if !params[:quants][index].empty?
                 recipe_ingredient.save
-                new_recipe.ingredients << new_ingredient
-                new_ingredient.save
             end
         end
 
-        params[:meals].each do |meal|
-            new_meal = Meal.find_or_create_by(name: meal)
-            new_recipe.meals << new_meal
+        if !!params[:meals]
+            params[:meals].each do |meal|
+                new_meal = Meal.find_or_create_by(name: meal)
+                new_recipe.meals << new_meal
+            end
         end
 
         params[:steps].each do |step|
@@ -57,7 +58,7 @@ class RecipeController < ApplicationController
         end
         new_recipe.save
         current_user.save
-        redirect '/recipes'
+        redirect "/recipes/#{new_recipe.id}"
     end
 
     patch '/recipes/:id' do
@@ -65,22 +66,23 @@ class RecipeController < ApplicationController
         recipe = Recipe.find(params[:id])
         recipe.ingredients.clear; recipe.instructions.clear; recipe.meals.clear
         ingredients_array = params[:ings]
-        recipe.update(params[:recipe])
+        
       
         params[:ings].each do |ing|
             if !ing.empty?
                 index = params[:ings].index(ing)
-                new_ingredient = Ingredient.find_or_create_by(name: params[:ings][index])
-                recipe.ingredients << new_ingredient
+                recipe.ingredients << Ingredient.find_or_create_by(name: ing)
                 recipe_ingredient = RecipeIngredient.last
                 recipe_ingredient.quantity = params[:quants][index] if !params[:quants][index].empty?
                 recipe_ingredient.save
             end
         end
 
-        params[:meals].each do |meal|
-            new_meal = Meal.find_or_create_by(name: meal)
-            recipe.meals << new_meal
+        if !! params[:meals]
+            params[:meals].each do |meal|
+                new_meal = Meal.find_or_create_by(name: meal)
+                recipe.meals << new_meal
+            end
         end
 
         params[:steps].each do |step|
@@ -89,7 +91,7 @@ class RecipeController < ApplicationController
                 recipe.instructions << new_step
             end
         end
-        recipe.save
+        recipe.update(params[:recipe])
         current_user.save
         redirect "/recipes/#{recipe.id}"
     end

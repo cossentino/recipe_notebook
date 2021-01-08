@@ -3,7 +3,7 @@
 
 <div class="row" style="display:block">
     <div class="col s2"><h5>Chef: </h5> <%= @recipe.author %></div>
-    <div class="col s2"><h5>Cuisine: </h5> <%= @recipe.cuisine %></div>
+    <div class="col s2"><h5>Cuisine: </h5> <%= @recipe.cuisine.capitalize %></div>
     <div class="col s2"><h5>Cook/Prep Time: </h5> <%= @recipe.cook_time %></div>
     <div class="col s2"><h5>Serves: </h5> <%= @recipe.serves %></div>
     <div class="col s2"><h5> Meals: </h5> <ul><% @recipe.meals.pluck("name").each do |name| %>
