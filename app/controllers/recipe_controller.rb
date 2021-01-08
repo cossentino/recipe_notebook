@@ -65,6 +65,7 @@ class RecipeController < ApplicationController
         recipe = Recipe.find(params[:id])
         recipe.ingredients.clear; recipe.instructions.clear; recipe.meals.clear
         ingredients_array = params[:ings]
+        recipe.update(params[:recipe])
       
         params[:ings].each do |ing|
             if !ing.empty?
@@ -74,14 +75,12 @@ class RecipeController < ApplicationController
                 recipe_ingredient = RecipeIngredient.last
                 recipe_ingredient.quantity = params[:quants][index] if !params[:quants][index].empty?
                 recipe_ingredient.save
-                new_ingredient.save
             end
         end
 
         params[:meals].each do |meal|
             new_meal = Meal.find_or_create_by(name: meal)
             recipe.meals << new_meal
-            new_meal.recipes << recipe
         end
 
         params[:steps].each do |step|

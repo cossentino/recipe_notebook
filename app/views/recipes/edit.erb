@@ -11,6 +11,8 @@
         <input type="text" name="recipe[author]" id="recipe_author" value="<%= @recipe.author %>">
         <h6>Cuisine: </h6>
         <input type="text" name="recipe[cuisine]" id="recipe_cuisine" value="<%= @recipe.cuisine %>">
+        <h6>Serves: </h6>
+        <input type="text" name="recipe[serves]" id="recipe_serves" value="<%= @recipe.serves %>">
         <h6>Meal: </h6>
         <% @meals.each do |meal| %>
             <p>
@@ -54,7 +56,7 @@
                 <% end %>
             </div>
         </div>
-        <input type="submit" value="Edit Recipe">
+        <input class="btn" type="submit" value="Edit Recipe">
     </form>
 </div>
         

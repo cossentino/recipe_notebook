@@ -38,7 +38,7 @@ class AuthenticationController < ApplicationController
         @new_user = User.find_by(username: params[:username])
         if !@new_user
             @new_user = User.create(username: params[:username], password: params[:password])
-            login(@user)
+            login(@new_user)
         end
         redirect '/registration/failure'
     end

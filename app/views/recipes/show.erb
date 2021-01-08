@@ -2,13 +2,14 @@
 <h3><%= @recipe.name.split(" ").map {|w| w.capitalize}.join(" ") %></h3>
 
 
-<h6>Chef: <%= @recipe.author %></h6> 
-<h6>Cuisine: <%= @recipe.cuisine %></h6> 
-<h6>Cook/Prep Time: <%= @recipe.cook_time %></h6>
-<h6> Meals: </h6> <% @recipe.meals.pluck("name").each do |name| %>
-    <%= name.capitalize %>
-<% end %>
-<h6>Ingredients: </h6>
+<h5>Chef: </h5> <%= @recipe.author %> 
+<h5>Cuisine: </h5> <%= @recipe.cuisine %> 
+<h5>Cook/Prep Time: </h5> <%= @recipe.cook_time %>
+<h5>Serves: </h5> <%= @recipe.serves %>
+<h5> Meals: </h5> <ul><% @recipe.meals.pluck("name").each do |name| %>
+    <li><%= name.capitalize %></li>
+<% end %></ul>
+<h5>Ingredients: </h6> 
 <ul>
 <% @ingredients.each do |ing| %>
     <% quantity = RecipeIngredient.find_by(recipe_id: @recipe.id, ingredient_id: ing.id).quantity %>
@@ -20,7 +21,7 @@
 <% end %>
 </ul>
 
-<h6>Steps: </h6>
+<h5>Steps: </h5>
 <ol>
 <% @recipe.instructions.each do |inst| %>
     <li><%= inst.content %></li>
@@ -29,11 +30,9 @@
 
 
 <br><br>
-<div class="row">
-    <a style="float:left; padding-right:20px" href="/recipes/<%= @recipe.id %>/edit">Edit Recipe</a>
 
-    <form action="/recipes/<%= @recipe.id %>" method="post">
-    <input id="hidden" type="hidden" name="_method" value="delete">
-    <input type="submit" value="Delete Recipe">
-    </form> 
-</div>
+<a class="btn" style="float:left;" href="/recipes/<%= @recipe.id %>/edit">Edit Recipe</a>
+<form action="/recipes/<%= @recipe.id %>" method="post">
+<input id="hidden" type="hidden" name="_method" value="delete">
+<input class="btn" type="submit" value="Delete Recipe">
+</form> 
