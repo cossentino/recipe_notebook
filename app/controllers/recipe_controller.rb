@@ -2,6 +2,8 @@
 
 class RecipeController < ApplicationController
 
+    MEALS = ['Breakfast', 'Lunch', 'Dinner', 'Brunch', 'Snack']
+
     get '/recipes' do
         puts session
         @recipes = current_user.recipes
@@ -38,6 +40,7 @@ class RecipeController < ApplicationController
             end
         end
         if !@empty_field_names.empty?
+            puts params
             @recipe_data = params
             erb :'/recipes/retry'
 
@@ -117,6 +120,25 @@ class RecipeController < ApplicationController
 
 
     helpers do
+        
+        def params_to_labels(array)
+            array.map do |elem|
+                case elem
+                when "name"
+                    elem = "Recipe Name"
+                when "author"
+                    elem = "Chef"
+                when "cuisine"
+                    elem = "Cuisine"
+                when "serves"
+                    elem = "Serves"
+                when "cook_time"
+                    elem = "Cooking/Prep Time"
+                else
+                    elem
+                end
+            end
+        end
         
     end
 

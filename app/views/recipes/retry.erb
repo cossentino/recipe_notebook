@@ -1,10 +1,10 @@
 
-
-<h3>Please provide values for the following and re-submit:</h3>
+<br><br>
+<h5>Please provide values for the following and re-submit:</h5>
     <ul>
-        <% @empty_field_names.each do |field| %>
+        <% params_to_labels(@empty_field_names).each do |field| %>
             <li><%= field %></li>
-        <% end %>
+        <% end %> <br><br>
 
 <div class="container">
     <form method="post" action="/recipes">
@@ -17,10 +17,10 @@
         <h6>Serves: </h6>
         <input type="text" name="recipe[serves]" id="recipe_serves" value="<%= @recipe_data[:recipe][:serves] %>">
         <h6>Meal: </h6>
-        <% @meals.each do |meal| %>
+        <% MEALS.each do |meal| %>
             <p>
             <label>
-                <input type="checkbox" name="[meals][]" id="meal_<%= @meals.index(meal) %>" value="<%= meal %>" <%= "checked" if @recipe_data[:recipe][:meals].pluck(:name).include?(meal) %>>
+                <input type="checkbox" name="[meals][]" id="meal_<%= MEALS.index(meal) %>" value="<%= meal %>" <%= "checked" if @recipe_data[:meals].include?(meal) %>>
                 <span><%= meal %></span>
             </label>
             </p>
@@ -35,13 +35,12 @@
             <h6 class="col s9">Ingredient: </h6>
         </div>
         <div class="row">
-                <% @recipe_data[:quants].each do |quant| %>
+                <% quants_ingredients = @recipe_data[:quants].zip(@recipe_data[:ings]) %>
+                <% quants_ingredients.each do |quant, ing| %>
                     <div class="col s3">
                         <input type="text" name="quants[]" id="quants" value="<%= quant %>">
                     </div>
-                <% end %>
                     <div class="col s9">
-                    <% @recipe_data[:ings].each do |ing| %>
                          <input type="text" name="ings[]" id="ings" value="<%= ing %>">
                     </div>
                 <% end %>
@@ -52,20 +51,18 @@
                     <div class="col s9">
                          <input type="text" name="ings[]" id="ings">
                     </div>
-                <% end %>              
-                    
-
+                <% end %>        
         </div>
         <br><br>
         <div class ="row">
             <div class="col s12">
                 <h4>Steps: </h4>
                 <% i = 1 %>
-                <% @recipe.instructions.pluck("content").each do |inst| %>
-                    <%= "#{i}. " %><input type="text" name="steps[]" id="step" value="<%= inst %>">
+                <% @recipe_data[:steps] do |step| %>
+                    <%= "#{i}. " %><input type="text" name="steps[]" id="step" value="<%= step %>">
                     <% i += 1 %>
                 <% end %>
-                <% 5.times do %>
+                <% 10.times do %>
                     <%= "#{i}. " %><input type="text" name="steps[]" id="step">
                     <% i += 1 %>
                 <% end %>
