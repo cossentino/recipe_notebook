@@ -3,27 +3,28 @@
 <h3>Edit your recipe:</h3>
 
 <div class="container">
-    <form method="post" action="/recipes">
+    <form method="post" action="/recipes/<%= @recipe.id %>">
+        <input id="hidden" type="hidden" name="_method" value="patch">
         <h6> Recipe Name: </h6>
-        <input type="text" name="recipe[name]" id="recipe_name" value="<%= @recipe_data[:recipe][:name] %>">
+        <input type="text" name="recipe[name]" id="recipe_name" value="<%= @recipe.name %>">
         <h6>Chef: </h6>
-        <input type="text" name="recipe[author]" id="recipe_author" value="<%= @recipe_data[:recipe][:author] %>">
+        <input type="text" name="recipe[author]" id="recipe_author" value="<%= @recipe.author %>">
         <h6>Cuisine: </h6>
-        <input type="text" name="recipe[cuisine]" id="recipe_cuisine" value="<%= @recipe_data[:recipe][:cuisine] %>">
+        <input type="text" name="recipe[cuisine]" id="recipe_cuisine" value="<%= @recipe.cuisine %>">
         <h6>Serves: </h6>
-        <input type="text" name="recipe[serves]" id="recipe_serves" value="<%= @recipe_data[:recipe][:serves] %>">
+        <input type="text" name="recipe[serves]" id="recipe_serves" value="<%= @recipe.serves %>">
         <h6>Meal: </h6>
         <% @meals.each do |meal| %>
             <p>
             <label>
-                <input type="checkbox" name="[meals][]" id="meal_<%= @meals.index(meal) %>" value="<%= meal %>" <%= "checked" if @recipe_data[:recipe][:meals].pluck(:name).include?(meal) %>>
+                <input type="checkbox" name="[meals][]" id="meal_<%= @meals.index(meal) %>" value="<%= meal %>" <%= "checked" if @recipe.meals.pluck(:name).include?(meal) %>>
                 <span><%= meal %></span>
             </label>
             </p>
         <% end %>
           
         <h6>Cooking/Prep Time: </h6>
-        <input type="text" name="recipe[cook_time]" id="recipe_cook_time" value="<%= @recipe_data[:recipe][:cook_time] %>">
+        <input type="text" name="recipe[cook_time]" id="recipe_cook_time" value="<%= @recipe.cook_time %>">
 
         <h5>Ingredients: </h5>
         <div class="row">
