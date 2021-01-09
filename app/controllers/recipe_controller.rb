@@ -29,36 +29,49 @@ class RecipeController < ApplicationController
 
     post '/recipes' do
         puts params
-        new_recipe = Recipe.new(params[:recipe])
-        current_user.recipes << new_recipe
-        ingredients_array = params[:ings]
-      
-        params[:ings].each do |ing|
-            if !ing.empty?
-                index = params[:ings].index(ing)
-                new_recipe.ingredients <<  Ingredient.find_or_create_by(name: params[:ings][index])
-                recipe_ingredient = RecipeIngredient.last
-                recipe_ingredient.quantity = params[:quants][index] if !params[:quants][index].empty?
-                recipe_ingredient.save
-            end
-        end
 
-        if !!params[:meals]
-            params[:meals].each do |meal|
-                new_meal = Meal.find_or_create_by(name: meal)
-                new_recipe.meals << new_meal
+    ##Data Validation - ensure mandatory fields not empty
+        @empty_field_names = []
+        params[:recipe].keys.each do |key|
+            if params[:recipe][key].empty?
+                @empty_field_names << key
             end
         end
+        if !@empty_field_names.empty?
+            @recipe_data = params
+            erb :'/recipes/retry'
 
-        params[:steps].each do |step|
-            if !step.empty?
-                new_step = Instruction.new(content: step) 
-                new_recipe.instructions << new_step
+    ## If valid, proceed with storing recipe        
+        else
+            new_recipe = Recipe.new(params[:recipe])
+            current_user.recipes << new_recipe
+            params[:ings].each do |ing|
+                if !ing.empty?
+                    index = params[:ings].index(ing)
+                    new_recipe.ingredients <<  Ingredient.find_or_create_by(name: params[:ings][index])
+                    RecipeIngredient.last.quantity = params[:quants][index] if !params[:quants][index].empty?
+                    RecipeIngredient.last.save
+                end
             end
+        
+
+            if !!params[:meals]
+                params[:meals].each do |meal|
+                    new_meal = Meal.find_or_create_by(name: meal)
+                    new_recipe.meals << new_meal
+                end
+            end
+
+            params[:steps].each do |step|
+                if !step.empty?
+                    new_step = Instruction.new(content: step) 
+                    new_recipe.instructions << new_step
+                end
+            end
+            new_recipe.save
+            current_user.save
+            redirect "/recipes/#{new_recipe.id}"
         end
-        new_recipe.save
-        current_user.save
-        redirect "/recipes/#{new_recipe.id}"
     end
 
     patch '/recipes/:id' do
@@ -100,6 +113,11 @@ class RecipeController < ApplicationController
         @recipe = Recipe.find(params[:id])
         @recipe.destroy
         redirect '/recipes'
+    end
+
+
+    helpers do
+        
     end
 
 
