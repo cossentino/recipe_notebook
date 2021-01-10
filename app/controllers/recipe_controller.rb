@@ -27,8 +27,11 @@ class RecipeController < ApplicationController
     get '/recipes/:id/edit' do
         @recipe = Recipe.find(params[:id])
         @ingredients = @recipe.ingredients
-        puts @ingredients.pluck("name")
-        view_or_redirect(:'/recipes/edit')
+        if is_correct_user_for_recipe?(session[:user_id], @recipe.user_id)
+            view_or_redirect(:'/recipes/edit')
+        else
+            redirect to '/recipes'
+        end
     end
 
     post '/recipes' do
@@ -140,7 +143,7 @@ class RecipeController < ApplicationController
         end
         
         def is_correct_user_for_recipe?(user_id, recipe_user_id)
-            user_id == recipe_id
+            user_id == recipe_user_id
         end
 
     end
