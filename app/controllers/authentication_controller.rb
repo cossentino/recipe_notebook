@@ -54,5 +54,6 @@ class AuthenticationController < ApplicationController
             session.clear
             redirect '/authentication/login'
         end
+
     end
 end
