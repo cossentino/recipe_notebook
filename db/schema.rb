@@ -11,12 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210108004715) do
-
-  create_table "comments", force: :cascade do |t|
-    t.string  "content"
-    t.integer "instruction_id"
-  end
+ActiveRecord::Schema.define(version: 20210110184655) do
 
   create_table "ingredients", force: :cascade do |t|
     t.string "name"
