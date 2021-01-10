@@ -1,5 +1,7 @@
 
-# Recipe Notebook Sinatra Application
+# Recipe Notebook
+
+
 
 
 The goal of the app is to 
@@ -17,3 +19,7 @@ The app is locally hosted
 
 
 
+Potential future additions:
+
+    Comments: Notes in the margins of ingredients/steps to modify recipe
+    Import: Web-scraper to import recipe from website given the URL

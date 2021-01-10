@@ -11,7 +11,6 @@ class RecipeController < ApplicationController
     end
 
     get '/recipes/new' do
-        @meals = ['Breakfast', 'Lunch', 'Dinner', 'Brunch', 'Snack']
         view_or_redirect(:'/recipes/new')
     end
 
@@ -22,7 +21,6 @@ class RecipeController < ApplicationController
     end
 
     get '/recipes/:id/edit' do
-        @meals = ['Breakfast', 'Lunch', 'Dinner', 'Brunch', 'Snack']
         @recipe = Recipe.find(params[:id])
         @ingredients = @recipe.ingredients
         puts @ingredients.pluck("name")
@@ -30,21 +28,21 @@ class RecipeController < ApplicationController
     end
 
     post '/recipes' do
-        puts params
-
-    ##Data Validation - ensure mandatory fields not empty
+        ## Data Validation - ensure mandatory fields not empty
         @empty_field_names = []
         params[:recipe].keys.each do |key|
             if params[:recipe][key].empty?
                 @empty_field_names << key
             end
         end
+    
+        ## Show variant of edit form using params from post request
         if !@empty_field_names.empty?
             puts params
             @recipe_data = params
             erb :'/recipes/retry'
 
-    ## If valid, proceed with storing recipe        
+        ## If valid, proceed with storing recipe        
         else
             new_recipe = Recipe.new(params[:recipe])
             current_user.recipes << new_recipe
@@ -57,7 +55,6 @@ class RecipeController < ApplicationController
                 end
             end
         
-
             if !!params[:meals]
                 params[:meals].each do |meal|
                     new_meal = Meal.find_or_create_by(name: meal)
@@ -118,9 +115,7 @@ class RecipeController < ApplicationController
         redirect '/recipes'
     end
 
-
     helpers do
-        
         def params_to_labels(array)
             array.map do |elem|
                 case elem
@@ -138,9 +133,6 @@ class RecipeController < ApplicationController
                     elem
                 end
             end
-        end
-        
+        end 
     end
-
-
 end
