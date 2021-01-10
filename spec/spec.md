@@ -31,7 +31,7 @@ Specs:
 - [x] BONUS - not required - Display validation failures to user with error message (example form URL e.g. /posts/new)
         -- Certain fields are mandatory when creating a new recipe. If a user does not fill out a mandatory field, they are returned to the form with a message asking them to fill in the mandatory fields.
 
-- [ ] Your README.md includes a short description, install instructions, a contributors guide and a link to the license for your code
+- [x] Your README.md includes a short description, install instructions, a contributors guide and a link to the license for your code
 
 Confirm
 - [x] You have a large number of small Git commits
