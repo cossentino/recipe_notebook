@@ -6,9 +6,9 @@ This Sinatra web application allows users to create and edit personal recipes, i
     
 ## For Flatiron School project submission:
     
-   Non-technical demo video: ""
+   Non-technical demo video: "https://youtu.be/37mMgROivlU"
    
-   Blog post: ""
+   Blog post: "https://icossentino.medium.com/a-detailed-example-of-how-rubys-activerecord-and-html-forms-interact-3ae113789160"
     
 ## Installation and Usage
 
