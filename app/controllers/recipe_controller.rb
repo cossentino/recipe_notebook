@@ -45,9 +45,11 @@ class RecipeController < ApplicationController
     post '/recipes' do
         ## Data Validation - ensure mandatory fields not empty
         @invalid_fields = generate_invalid_fields_array(params[:recipe])
+
+
     
         ## If any fields are empty, redirect to form with instructions to complete
-        if !@invalid_fields.empty?
+        if !@invalid_fields.all? {|f| f == nil }
             @recipe_data = params
             erb :'/recipes/retry'
 
@@ -120,16 +122,16 @@ class RecipeController < ApplicationController
         end
 
         def add_new_meal(recipe, meals_array)
-            if !!array
-                array.each do |meal_name|
+            if !!meals_array
+                meals_array.each do |meal_name|
                     recipe.meals << Meal.find_or_create_by(name: meal_name)
                 end
             end
         end
 
         def add_new_step(recipe, steps_array)
-            if !!array
-                array.each do |step|
+            if !!steps_array
+                steps_array.each do |step|
                     recipe.instructions << Instruction.find_or_create_by(content: step)
                 end
             end
@@ -142,9 +144,9 @@ class RecipeController < ApplicationController
         end
 
         def generate_invalid_fields_array(recipe_hash)
-            @empty_field_name = recipe_hash.values.map do |key|
-                if recipe_hash [key].empty?
-                    @empty_field_names << key
+            invalid_fields = recipe_hash.keys.map do |key|
+                if recipe_hash[key].empty?
+                    invalid_fields << key
                 end
             end
         end

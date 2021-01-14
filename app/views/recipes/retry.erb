@@ -2,7 +2,7 @@
 <br><br>
 <h5>Please provide values for the following and re-submit:</h5>
     <ul>
-        <% params_to_labels(@empty_field_names).each do |field| %>
+        <% params_to_labels(@invalid_fields).each do |field| %>
             <li><%= field %></li>
         <% end %> <br><br>
 
@@ -35,23 +35,22 @@
             <h6 class="col s9">Ingredient: </h6>
         </div>
         <div class="row">
-                <% quants_ingredients = @recipe_data[:quants].zip(@recipe_data[:ings]) %>
-                <% quants_ingredients.each do |quant, ing| %>
-                    <div class="col s3">
-                        <input type="text" name="quants[]" id="quants" value="<%= quant %>">
-                    </div>
-                    <div class="col s9">
-                         <input type="text" name="ings[]" id="ings" value="<%= ing %>">
-                    </div>
-                <% end %>
-                <% 10.times do %>
-                    <div class="col s3">
-                        <input type="text" name="quants[]" id="quants">
-                    </div>
-                    <div class="col s9">
-                         <input type="text" name="ings[]" id="ings">
-                    </div>
-                <% end %>        
+            <% @recipe_data[:ingreds].each do |ingred| %>
+                <div class="col s3">
+                    <input type="text" name="ingreds[][quant]" id="quants" value="<%= ingred[:quant] %>">
+                </div>
+                <div class="col s9">
+                        <input type="text" name="ingreds[][name]" id="names" value="<%= ingred[:name] %>">
+                </div>
+            <% end %>
+            <% 10.times do %>
+                <div class="col s3">
+                    <input type="text" name="ingreds[][quant]" id="quants">
+                </div>
+                <div class="col s9">
+                        <input type="text" name="ingreds[][name]" id="names">
+                </div>
+            <% end %>        
         </div>
         <br><br>
         <div class ="row">
