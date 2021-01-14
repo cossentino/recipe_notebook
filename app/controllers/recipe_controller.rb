@@ -51,8 +51,7 @@ class RecipeController < ApplicationController
 
         ## If valid, proceed with storing recipe        
         else
-            new_recipe = Recipe.new(params[:recipe])
-            current_user.recipes << new_recipe
+            new_recipe = create_new_recipe(params[:recipe])
             params[:ings].each do |ing|
                 if !ing.empty?
                     index = params[:ings].index(ing)
@@ -64,8 +63,7 @@ class RecipeController < ApplicationController
         
             if !!params[:meals]
                 params[:meals].each do |meal|
-                    new_meal = Meal.find_or_create_by(name: meal)
-                    new_recipe.meals << new_meal
+                    new_recipe.meals <<  Meal.find_or_create_by(name: meal)
                 end
             end
 
@@ -82,12 +80,9 @@ class RecipeController < ApplicationController
     end
 
     patch '/recipes/:id' do
-        puts params
         recipe = Recipe.find(params[:id])
         recipe.ingredients.clear; recipe.instructions.clear; recipe.meals.clear
-        ingredients_array = params[:ings]
         
-      
         params[:ings].each do |ing|
             if !ing.empty?
                 index = params[:ings].index(ing)
@@ -145,6 +140,19 @@ class RecipeController < ApplicationController
         def is_correct_user_for_recipe?(user_id, recipe_user_id)
             user_id == recipe_user_id
         end
+
+        def create_new_recipe(recipe_hash)
+            new_recipe = Recipe.new(recipe_hash)
+            current_user.recipes << new_recipe
+            new_recipe
+        end
+
+        def add_ingredients(recipe, ingreds_array)
+            ingreds_array.each do |ingred|
+                if !ing.empty?
+                    recipe.ingredients << Ingredient.find_or_create_by(name: ingred)
+
+            
 
     end
 end
