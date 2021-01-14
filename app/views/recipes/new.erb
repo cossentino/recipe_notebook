@@ -28,15 +28,15 @@
         <br><br><h6>Add Ingredients: </h6><br>
         <div class="row">
             <label class="col s3" for="quants">Quantity:</label>
-            <label class="col s9" for="ings">Ingredient:</label>
+            <label class="col s9" for="ingred_names">Ingredient:</label>
         </div>
         <div class="row">
                 <% 10.times do %>
                     <div class="col s3">
-                        <input type="text" name=quants[] id="quants">
+                        <input type="text" name=ingreds[][quant] id="quants">
                     </div>
                     <div class="col s9">
-                         <input type="text" name=ings[] id="ings">
+                         <input type="text" name=ingreds[][name] id="ingred_names">
                     </div>
                 <% end %>
         </div>

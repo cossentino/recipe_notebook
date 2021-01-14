@@ -4,6 +4,8 @@ class RecipeController < ApplicationController
 
     MEALS = ['Breakfast', 'Lunch', 'Dinner', 'Brunch', 'Snack']
 
+    ########## GET #################################################################
+    
     get '/recipes' do
         puts session
         @recipes = current_user.recipes
@@ -13,11 +15,7 @@ class RecipeController < ApplicationController
     get '/recipes/test' do
         erb :'/recipes/test'
     end
-
-    post '/tests' do
-        puts params
-    end
-
+    
     get '/recipes/new' do
         view_or_redirect(:'/recipes/new')
     end
@@ -42,18 +40,14 @@ class RecipeController < ApplicationController
         end
     end
 
+    ########## POST ##################################################################
+
     post '/recipes' do
         ## Data Validation - ensure mandatory fields not empty
-        @empty_field_names = []
-        params[:recipe].keys.each do |key|
-            if params[:recipe][key].empty?
-                @empty_field_names << key
-            end
-        end
+        @invalid_fields = generate_invalid_fields_array(params[:recipe])
     
         ## If any fields are empty, redirect to form with instructions to complete
-        if !@empty_field_names.empty?
-            puts params
+        if !@invalid_fields.empty?
             @recipe_data = params
             erb :'/recipes/retry'
 
@@ -65,6 +59,8 @@ class RecipeController < ApplicationController
             redirect "/recipes/#{new_recipe.id}"
         end
     end
+
+    ########## PATCH/DELETE #########################################################
 
     patch '/recipes/:id' do
         recipe = Recipe.find(params[:id])
@@ -80,6 +76,7 @@ class RecipeController < ApplicationController
         @recipe.destroy
         redirect '/recipes'
     end
+
 
     helpers do
 
@@ -145,13 +142,12 @@ class RecipeController < ApplicationController
         end
 
         def generate_invalid_fields_array(recipe_hash)
-            @empty_field_name = recipe_hash.values.map do { |v| v.empty ? v : next }
+            @empty_field_name = recipe_hash.values.map do |key|
+                if recipe_hash [key].empty?
+                    @empty_field_names << key
+                end
+            end
+        end
                 
-
-
-    
-
-
-
     end
 end
