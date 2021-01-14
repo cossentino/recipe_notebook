@@ -46,8 +46,6 @@ class RecipeController < ApplicationController
         ## Data Validation - ensure mandatory fields not empty
         @invalid_fields = generate_invalid_fields_array(params[:recipe])
 
-
-    
         ## If any fields are empty, redirect to form with instructions to complete
         if !@invalid_fields.all? {|f| f == nil }
             @recipe_data = params
@@ -57,7 +55,7 @@ class RecipeController < ApplicationController
         else
             new_recipe = create_new_recipe(params[:recipe])
             recipe_builder(new_recipe, params[:ingreds], params[:meals], params[:steps])
-            current_user.save
+            new_recipe.save
             redirect "/recipes/#{new_recipe.id}"
         end
     end
@@ -113,15 +111,15 @@ class RecipeController < ApplicationController
 
         def add_ingredients(recipe, ingreds_array)
             ingreds_array.each do |ingred|
-                if !ingred.values.all? {|v| v = ""}
-                    recipe.ingredients << Ingredient.find_or_create_by(name: ingred["name"]) if !ingred["name"].empty?
-                    RecipeIngredient.last.quantity = ingred["quantity"] if !ingred["quantity"].empty?
+                if !ingred.values.all? {|v| v == ""}
+                    recipe.ingredients << Ingredient.find_or_create_by(name: ingred["name"]) # if !ingred["name"].empty?
+                    RecipeIngredient.last.quantity = ingred["quant"] # if !ingred["quant"].empty?
                     RecipeIngredient.last.save
                 end
-            end
+            end 
         end
 
-        def add_new_meal(recipe, meals_array)
+        def add_meals(recipe, meals_array)
             if !!meals_array
                 meals_array.each do |meal_name|
                     recipe.meals << Meal.find_or_create_by(name: meal_name)
@@ -129,18 +127,21 @@ class RecipeController < ApplicationController
             end
         end
 
-        def add_new_step(recipe, steps_array)
+        def add_steps(recipe, steps_array)
+            binding.pry
             if !!steps_array
                 steps_array.each do |step|
+                    if !step.empty?
                     recipe.instructions << Instruction.find_or_create_by(content: step)
+                    end
                 end
             end
         end
 
         def recipe_builder(recipe, ingredients, meals, steps)
             add_ingredients(recipe, ingredients)
-            add_new_meal(recipe, meals)
-            add_new_step(recipe, steps)
+            add_meals(recipe, meals)
+            add_steps(recipe, steps)
         end
 
         def generate_invalid_fields_array(recipe_hash)
