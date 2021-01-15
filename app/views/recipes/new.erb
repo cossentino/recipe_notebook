@@ -12,6 +12,9 @@
         <input type="text" name="recipe[cuisine]" id="recipe_cuisine">
         <label for="recipe_serves">Serves:</label>
         <input type="text" name="recipe[serves]" id="recipe_serves">
+        <label for="recipe_cook_time">Cooking/Prep Time:</label>
+        <input type="text" name="recipe[cook_time]" id="recipe_cook_time">
+        
         <h6>Meal: </h6>
         <% MEALS.each do |meal| %>
             <p>
@@ -22,8 +25,6 @@
             </p>
         <% end %>
           
-        <label for="recipe_cook_time">Cooking/Prep Time:</label>
-        <input type="text" name="recipe[cook_time]" id="recipe_cook_time">
 
         <br><br><h6>Add Ingredients: </h6><br>
         <div class="row">

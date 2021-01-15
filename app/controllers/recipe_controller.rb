@@ -7,13 +7,8 @@ class RecipeController < ApplicationController
     ########## GET #################################################################
     
     get '/recipes' do
-        puts session
         @recipes = current_user.recipes
         view_or_redirect(:'/recipes/index')
-    end
-
-    get '/recipes/test' do
-        erb :'/recipes/test'
     end
     
     get '/recipes/new' do
@@ -32,9 +27,9 @@ class RecipeController < ApplicationController
 
     get '/recipes/:id/edit' do
         @recipe = Recipe.find(params[:id])
-        @ingredients = @recipe.ingredients
+        @recipe_ingredients = RecipeIngredient.where(recipe_id: @recipe.id )
         if is_correct_user_for_recipe?(session[:user_id], @recipe.user_id)
-            view_or_redirect(:'/recipes/edit')
+            view_or_redirect(:'/recipes/edit_test')
         else
             redirect to '/recipes'
         end
@@ -67,7 +62,7 @@ class RecipeController < ApplicationController
         recipe.update(params[:recipe])
         recipe.ingredients.clear; recipe.instructions.clear; recipe.meals.clear
         recipe_builder(recipe, params[:ingreds], params[:meals], params[:steps])
-        current_user.save
+        recipe.save
         redirect "/recipes/#{recipe.id}"
     end
 
@@ -112,9 +107,8 @@ class RecipeController < ApplicationController
         def add_ingredients(recipe, ingreds_array)
             ingreds_array.each do |ingred|
                 if !ingred.values.all? {|v| v == ""}
-                    recipe.ingredients << Ingredient.find_or_create_by(name: ingred["name"]) # if !ingred["name"].empty?
-                    RecipeIngredient.last.quantity = ingred["quant"] # if !ingred["quant"].empty?
-                    RecipeIngredient.last.save
+                    recipe.ingredients << Ingredient.find_or_create_by(name: ingred["name"]) if !ingred["name"].empty?
+                    RecipeIngredient.last.update(quantity: ingred["quant"]) if !ingred["quant"].empty?
                 end
             end 
         end
@@ -128,7 +122,6 @@ class RecipeController < ApplicationController
         end
 
         def add_steps(recipe, steps_array)
-            binding.pry
             if !!steps_array
                 steps_array.each do |step|
                     if !step.empty?
