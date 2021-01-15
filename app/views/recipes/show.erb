@@ -2,10 +2,10 @@
 <h3 style="color:#7B0000"><%= sentence_case(@recipe.name) %></h3>
 
 <div class="row" style="display:block">
-    <div class="col s2"><h5>Chef: </h5> <%= @recipe.author %></div>
+    <div class="col s1"><h5>Chef: </h5> <%= @recipe.author %></div>
     <div class="col s2"><h5>Cuisine: </h5> <%= @recipe.cuisine.capitalize %></div>
     <div class="col s2"><h5>Cook/Prep Time: </h5> <%= @recipe.cook_time %></div>
-    <div class="col s2"><h5>Serves: </h5> <%= @recipe.serves %></div>
+    <div class="col s1"><h5>Serves: </h5> <%= @recipe.serves %></div>
     <div class="col s2"><h5> Meals: </h5> <ul><% @recipe.meals.pluck("name").each do |name| %>
         <li><%= name.capitalize %></li>
     <% end %></ul></div>
