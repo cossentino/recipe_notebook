@@ -29,7 +29,7 @@ class RecipeController < ApplicationController
         @recipe = Recipe.find(params[:id])
         @recipe_ingredients = RecipeIngredient.where(recipe_id: @recipe.id )
         if is_correct_user_for_recipe?(session[:user_id], @recipe.user_id)
-            view_or_redirect(:'/recipes/edit_test')
+            view_or_redirect(:'/recipes/edit')
         else
             redirect to '/recipes'
         end
@@ -140,10 +140,14 @@ class RecipeController < ApplicationController
         def generate_invalid_fields_array(recipe_hash)
             invalid_fields = recipe_hash.keys.map do |key|
                 if recipe_hash[key].empty?
-                    invalid_fields << key
+                    key
                 end
             end
         end
-                
+
+        def sentence_case(string)
+            caps_array = string.split(" ").map { |s| s.capitalize }
+            caps_array.join(" ")
+        end
     end
 end

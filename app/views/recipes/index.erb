@@ -8,7 +8,7 @@
 <h3> My Recipes </h3>
     <ul>
         <% @recipes.each do |recipe| %>
-            <li><h5><a href="/recipes/<%= recipe.id %>"><%= recipe.name.capitalize %></a></h5></li>
+            <li><h5><a href="/recipes/<%= recipe.id %>"><%= sentence_case(recipe.name) %></a></h5></li>
         <% end %>
     </ul>
 </div>

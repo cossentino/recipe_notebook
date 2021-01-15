@@ -36,7 +36,7 @@ class AuthenticationController < ApplicationController
 
     post '/registration' do
         @new_user = User.find_by(username: params[:username])
-        if !@new_user
+        if !@new_user && !params[:username].empty? && !params[:password].empty?
             @new_user = User.create(username: params[:username], password: params[:password])
             login(@new_user)
         end
